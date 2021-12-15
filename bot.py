@@ -1,3 +1,4 @@
+import requests
 import telebot
 import sqlite3
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
@@ -58,7 +59,13 @@ def echo_all(message):
     elif message.text == "Valyuta kursi":
         cur.execute("""update users set  step=1 where id=?""", [message.chat.id])
         con.commit()
-        bot.send_message(message.chat.id, "Hali tayyor emas!")
+        response = requests.get("https://cbu.uz/uz/arkhiv-kursov-valyut/json/")
+        if response.ok:
+            res = response.json()
+            curentcy_text = "Valyuta kurslari\n"
+            for r in res[0:5]:
+                curentcy_text += f"1 {r['Ccy']} = {r['Rate']} so'm\n"
+        bot.send_message(message.chat.id, curentcy_text)
     else:
         cur.execute("""select * from users where id= ?""", [message.chat.id])
         user = cur.fetchone()
