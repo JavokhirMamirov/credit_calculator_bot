@@ -48,4 +48,4 @@ def annuitet_calculator(amount, percent, months):
            f"JAMI TO'LOV MIQDORI : {amount+total_percent:,} so'm\n"
     return text_monthly+Text
 
-print(annuitet_calculator(10000000, 12, 24))
+print(annuitet_calculator(1500000, 18,45))
